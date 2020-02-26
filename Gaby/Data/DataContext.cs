@@ -21,12 +21,12 @@ namespace Gaby.Data
                 .HasOne(n => n.Record)
                 .WithMany(r => r.Notes)
                 .HasForeignKey(n => n.RecordId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Person>()
                 .HasOne(p => p.Record)
                 .WithMany(r => r.People)
                 .HasForeignKey(p => p.RecordId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
