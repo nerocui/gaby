@@ -10,10 +10,12 @@ import HomePage from '../pages/HomePage';
 const routes = (props: any) => {
 	return (
 		<Router>
-            <Switch>
-                <PublicRoute path='/' exact component={LoginPage} />
-                <PrivateRoute path='/home' exact component={HomePage} />
-            </Switch>
+            <div className="router-wrapper">
+                <Switch>
+                    <PublicRoute path='/' exact component={LoginPage} />
+                    <PrivateRoute path='/home' exact component={HomePage} />
+                </Switch>
+            </div>
 		</Router>
 	);
 };

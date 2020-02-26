@@ -29,11 +29,15 @@ const LoginPage = (props: any) => {
 		<div className={classes.root}>
 			<div className={classes.formBox}>
 				<form onSubmit={OnSubmit}>
-					<div>User name</div>
-					<TextField value={username} onChange={OnChangeUsername} />
-					<div>Password</div>
-					<TextField value={password} onChange={OnChangePassword} type="password"/>
-					<Button variant="contained" color="primary" className={classes.gap} type="submit">Login</Button>
+                    <div>
+					    <TextField fullWidth label="User Name" value={username} onChange={OnChangeUsername} />
+                    </div>
+                    <div>
+					    <TextField fullWidth label="Password" value={password} onChange={OnChangePassword} type="password"/>
+                    </div>
+                    <div className={classes.gap}>
+                        <Button variant="contained" color="primary" type="submit">Login</Button>
+                    </div>
 				</form>
 			</div>
 		</div>
