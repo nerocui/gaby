@@ -16,9 +16,9 @@ function DispatchLogout() {
 	};
 }
 
-export function Login(username: string, password: string) {
+export function Login(userName: string, password: string) {
 	return (dispatch: any) => {
-		Axios.post(GetRootURL() + '/api/auth/login', {username, password})
+		Axios.post(GetRootURL() + '/api/auth/login', {userName, password})
 			.then(res => {
 				const { token } = res.data;
 				localStorage.setItem('token', token);

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Gaby.Data;
 using Gaby.Dtos;
+using Gaby.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,15 @@ namespace Gaby.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
+            if (userForLoginDto.UserName != "admin") {
+                return BadRequest("Only admin allowed.");
+            }
+            if (!await _repo.UserExists("admin")) {
+                var admin = new User {
+                    UserName = "admin",
+                };
+                await _repo.Register(admin, "admin");
+            }
             var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
             if (userFromRepo == null)
             {
