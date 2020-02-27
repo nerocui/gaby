@@ -38,6 +38,7 @@ namespace Gaby
             });
             services.AddCors();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IRecordRepository, RecordRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Gaby API", Version = "v1" });

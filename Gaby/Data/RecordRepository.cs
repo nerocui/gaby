@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Gaby.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace Gaby.Data
+{
+    public class RecordRepository : IRecordRepository
+    {
+        private readonly DataContext _context;
+        public RecordRepository(DataContext context)
+        {
+            _context = context;
+
+        }
+        public async Task<Record> Add(Record record)
+        {
+            await _context.Records.AddAsync(record);
+            await _context.SaveChangesAsync();
+            var notesFromRecord = record.Notes;
+            var peopleFromRecord = record.People;
+            foreach (var note in notesFromRecord)
+            {
+                note.RecordId = record.Id;
+            }
+            foreach (var person in peopleFromRecord)
+            {
+                person.RecordId = record.Id;
+            }
+            await _context.Notes.AddRangeAsync(notesFromRecord);
+            await _context.People.AddRangeAsync(peopleFromRecord);
+            await _context.SaveChangesAsync();
+            return await _context.Records
+                .Include(r => r.Notes)
+                .Include(r => r.People)
+                .FirstOrDefaultAsync(r => r.FileNumber == record.FileNumber);
+        }
+
+        public async Task<bool> AddAll(IEnumerable<Record> records)
+        {
+            try {
+                await _context.Records.AddRangeAsync(records);
+                await _context.SaveChangesAsync();
+                var fileNumbers = new List<int>();
+                foreach (var record in records)
+                {
+                    fileNumbers.Add(record.FileNumber);
+                }
+                var addedRecords = await _context.Records.Where(r => fileNumbers.Contains(r.FileNumber)).ToListAsync();
+                var notes = new List<Note>();
+                var people = new List<Person>();
+                foreach (var record in addedRecords)
+                {
+                    var notesFromRecord = record.Notes;
+                    var peopleFromRecord = record.People;
+                    foreach (var note in notesFromRecord)
+                    {
+                        note.RecordId = record.Id;
+                    }
+                    foreach (var person in peopleFromRecord)
+                    {
+                        person.RecordId = record.Id;
+                    }
+                    notes.AddRange(record.Notes);
+                    people.AddRange(record.People);
+                }
+                await _context.Notes.AddRangeAsync(notes);
+                await _context.People.AddRangeAsync(people);
+                await _context.SaveChangesAsync();
+                return true;
+            } catch (Exception)
+            {
+                return false;
+            }
+            
+        }
+
+        public Task<Note> AddNote(Note note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Note>> AddNotes(IEnumerable<Note> notes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Person>> AddPeople(IEnumerable<Person> people)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Person> AddPerson(Person person)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Record> Delete(Record record)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<ICollection<Record>> GetAllRecords()
+        {
+            return await _context.Records.ToListAsync();
+        }
+
+        public Task<Record> GetRecordById(int recordId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<Record> Modify(Record record)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<bool> RecordExists(int fileNumber)
+        {
+            return await _context.Records.FirstOrDefaultAsync(x => x.FileNumber == fileNumber) != null;
+        }
+    }
+}
