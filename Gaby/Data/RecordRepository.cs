@@ -19,19 +19,21 @@ namespace Gaby.Data
         {
             await _context.Records.AddAsync(record);
             await _context.SaveChangesAsync();
-            var notesFromRecord = record.Notes;
-            var peopleFromRecord = record.People;
-            foreach (var note in notesFromRecord)
-            {
-                note.RecordId = record.Id;
-            }
-            foreach (var person in peopleFromRecord)
-            {
-                person.RecordId = record.Id;
-            }
-            await _context.Notes.AddRangeAsync(notesFromRecord);
-            await _context.People.AddRangeAsync(peopleFromRecord);
-            await _context.SaveChangesAsync();
+            // var notesFromRecord = record.Notes;
+            // var peopleFromRecord = record.People;
+            // record.Notes = null;
+            // record.People = null;
+            // foreach (var note in notesFromRecord)
+            // {
+            //     note.RecordId = record.Id;
+            // }
+            // foreach (var person in peopleFromRecord)
+            // {
+            //     person.RecordId = record.Id;
+            // }
+            // await _context.Notes.AddRangeAsync(notesFromRecord);
+            // await _context.People.AddRangeAsync(peopleFromRecord);
+            // await _context.SaveChangesAsync();
             return await _context.Records
                 .Include(r => r.Notes)
                 .Include(r => r.People)
@@ -43,38 +45,12 @@ namespace Gaby.Data
             try {
                 await _context.Records.AddRangeAsync(records);
                 await _context.SaveChangesAsync();
-                var fileNumbers = new List<int>();
-                foreach (var record in records)
-                {
-                    fileNumbers.Add(record.FileNumber);
-                }
-                var addedRecords = await _context.Records.Where(r => fileNumbers.Contains(r.FileNumber)).ToListAsync();
-                var notes = new List<Note>();
-                var people = new List<Person>();
-                foreach (var record in addedRecords)
-                {
-                    var notesFromRecord = record.Notes;
-                    var peopleFromRecord = record.People;
-                    foreach (var note in notesFromRecord)
-                    {
-                        note.RecordId = record.Id;
-                    }
-                    foreach (var person in peopleFromRecord)
-                    {
-                        person.RecordId = record.Id;
-                    }
-                    notes.AddRange(record.Notes);
-                    people.AddRange(record.People);
-                }
-                await _context.Notes.AddRangeAsync(notes);
-                await _context.People.AddRangeAsync(people);
-                await _context.SaveChangesAsync();
                 return true;
             } catch (Exception)
             {
                 return false;
             }
-            
+
         }
 
         public Task<Note> AddNote(Note note)
@@ -104,7 +80,10 @@ namespace Gaby.Data
 
         public async Task<ICollection<Record>> GetAllRecords()
         {
-            return await _context.Records.ToListAsync();
+            return await _context.Records
+                .Include(r => r.Notes)
+                .Include(r => r.People)
+                .ToListAsync();
         }
 
         public Task<Record> GetRecordById(int recordId)

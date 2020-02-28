@@ -10,8 +10,14 @@ export type AuthState = {
 	loggedIn: boolean,
 };
 
+export type RecordState = {
+    items: Array<Record>,
+    selectedItem: Record | null,
+};
+
 export type State = {
     AuthState: AuthState,
+    RecordState: RecordState,
 };
 
 export type Note = {

@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import TYPE from './type';
+import { Record } from '../models';
 import { GetRootURL } from '../utils/DomainService';
 
 function DispatchLogin(token: string) {
@@ -16,6 +17,13 @@ function DispatchLogout() {
 	};
 }
 
+function DispatchSetRecords(records: Array<Record>) {
+	return {
+		type: TYPE.SET_RECORDS,
+		payload: records,
+	};
+}
+
 export function Login(userName: string, password: string) {
 	return (dispatch: any) => {
 		Axios.post(GetRootURL() + '/api/auth/login', {userName, password})
@@ -28,6 +36,18 @@ export function Login(userName: string, password: string) {
 				console.log('Auth Error: ', err);
 			});
 	};
+}
+
+export function GetRecords() {
+	return (dispatch: any) => {
+		Axios.get(GetRootURL() + '/api/record/getall')
+			.then(res => {
+				dispatch(DispatchSetRecords(res.data));
+			})
+			.catch(err => {
+				console.log('Failed to get records', err);
+			});
+	}
 }
 
 export function Logout() {
