@@ -12,7 +12,7 @@ namespace Gaby.Data
          Task<Record> Modify(Record record);
          Task<Record> GetRecordById(int recordId);
          Task<ICollection<Record>> GetAllRecords();
-         Task<bool> RecordExists(int fileNumber);
+         Task<bool> RecordExists(string fileNumber);
          Task<Note> AddNote(Note note);
          Task<IEnumerable<Note>> AddNotes(IEnumerable<Note> notes);
          Task<Person> AddPerson(Person person);

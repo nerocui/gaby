@@ -9,13 +9,14 @@ namespace Gaby.Models
     public class Record
     {
         public int Id { get; set; }
-        public int FileNumber { get; set; }
+        public string FileNumber { get; set; }
         public DateTime DateOfApplication { get; set; }
         public DateTime DateOfVisit { get; set; }
         public DateTime DateHelped { get; set; }
-        public DateTime DiagnosisTime { get; set; }
+        public DateTime DiagnosisDate { get; set; }
         public DateTime DateOfRelapse { get; set; }
         public DateTime HeavenDate { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string LocationOfVisit { get; set; }
         public string SocialWorker { get; set; }
         public int LengthOfTreatment { get; set; }

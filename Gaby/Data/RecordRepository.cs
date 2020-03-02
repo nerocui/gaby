@@ -96,7 +96,7 @@ namespace Gaby.Data
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> RecordExists(int fileNumber)
+        public async Task<bool> RecordExists(string fileNumber)
         {
             return await _context.Records.FirstOrDefaultAsync(x => x.FileNumber == fileNumber) != null;
         }

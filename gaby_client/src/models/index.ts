@@ -42,14 +42,15 @@ export type Person = {
 
 export type Record = {
     id: number,
-    fileNumber: number,
+    fileNumber: string,
     dateOfApplication: Date,
     dateOfVisit: Date,
     dateHelped: Date,
-    diagnosisTime: Date,
+    diagnosisDate: Date,
     dateOfRelapse: Date,
     heavenDate: Date,
-    locationOfVisit: Date,
+    locationOfVisit: string,
+    dateOfBirth: Date,
     socialWorker: string,
     lengthOfTreatment: number,
     childId: number,

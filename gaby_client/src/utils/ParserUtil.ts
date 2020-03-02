@@ -1,206 +1,255 @@
-import UniqueId from "uniqid";
-import changeCase from "change-case";
-import settings from '../data/settings.json';
-import { Person, Role } from "../models/index.js";
+import { Person, Role, Record, Note } from "../models/index.js";
+import { WorkSheet } from "xlsx";
 
-function parseRole(role: string): Role {
-    let description: string = '';
-    switch (role.toLowerCase()) {
-        case 'child':
-            description = 'A child of the family.';
-            break;
-        case 'parent':
-            description = 'Parent of the family.';
-        case 'sibling':
-            description = 'Subling of the main child.';
-        default:
-            break;
+export const ParseRaw = (sheet: WorkSheet): Array<Record> => {
+  const column = 23;
+  let i = 0;
+  let records: Array<Record> = [];
+  let record: any = {};
+  record.id = 0;
+  for (let key in sheet) {
+    if (key === '!ref')
+      continue;
+    if (key === '!margins')
+      break;
+    if (i < column) {
+      i++;
+      continue;
     }
-    return {
-        id: 0,
-        name: role,
-        description,
-    };
-}
-
-function parseName(name: string, role: string): Person {
-  const [firstName, lastName] = name.split(" ");
-  return {
-      id: 0,
-      firstName,
-      lastName,
-      role: parseRole(role),
-      displayName: firstName + ' ' + lastName
-    };
-}
-
-export function parseChild(name: string) {
-  return parseName(name, "child");
-}
-
-export function parseParents(name: string) {
-  const parents = name.split(" and ");
-  let parentObjects: Array<any> = [];
-  parents.forEach(parent => {
-    if (!parent) {
-      return;
+    const value = sheet[key];
+    console.log(sheet[key]);
+    let noValue = false;
+    let familyName = '';
+    try {
+      if (value.v.trim() === 'N/A' || value.v.trim() === '')
+        noValue = true;
+    } catch (e) {
+      if (value.w.trim() === 'N/A' || value.w.trim() === '')
+        noValue = true;
     }
-    if (/(?<=[a-z]) (?=[a-z])/i.test(parent)) {
-      parentObjects.push(parseName(parent, "parent"));
-      return;
+    switch (i % column) {
+      case 0://file number
+        record.fileNumber = value.v;
+        break;
+      case 1://date of application //date need to display as UTC
+        if (noValue) {
+          record.dateOfApplication = null;
+        } else {
+          record.dateOfApplication = new Date(Date.parse(value.w));
+        }
+        break;
+      case 2://date helped
+        if (noValue) {
+          record.dateOfVisit = null;
+        } else {
+          record.dateOfVisit = new Date(Date.parse(value.w));
+        }
+        break;
+      case 3://child
+        const fullName = value.v.split(' ');
+        let firstName = '',
+            lastName = '';
+        if (fullName.length > 0) {
+          firstName = fullName[0];
+          if (fullName.length > 1) {
+            lastName = fullName[1];
+            familyName = lastName;
+          }
+        }
+        const displayName = (firstName + ' ' + lastName).trim();
+        const child: Person = {
+          id: 0,
+          firstName,
+          lastName,
+          displayName,
+          role: {
+            id: 0,
+            name: 'child',
+            description: 'child of the file'
+          }
+        };
+        if (!record.people) {
+          record.people = [];
+        }
+        record.people.push(child);
+        break;
+      case 4://date of birthday
+        if (noValue) {
+          record.dateOfBirth = null;
+        } else {
+          record.dateOfBirth = new Date(Date.parse(value.w));
+        }
+        break;
+      case 5://parents
+        const parents: Array<string> = value.v.split(' and ');
+        const parentsList: Array<Person> = [];
+        let parentFirstName1 = '',
+            parentFirstName2 = '';
+
+        if (parents.length > 0) {
+          const parentAName: Array<string> = parents[0].split(' ');
+          if (parentAName.length > 1) {
+            familyName = parentAName[parentAName.length - 1];
+          }
+          parentFirstName1 = parentAName[0];
+          if (parents.length > 1) {
+            const parentBName: Array<string> = parents[1].split(' ');
+            if (parentBName.length > 1) {
+              familyName = parentBName[parentBName.length - 1];
+            }
+            parentFirstName2 = parentBName[0];
+          }
+        }
+        if (!record.people) {
+          record.people = [];
+        }
+        if (parentFirstName1 !== '') {
+          const parent1: Person = {
+            id: 0,
+            firstName: parentFirstName1,
+            lastName: familyName,
+            displayName: (parentFirstName1 + ' ' + familyName).trim(),
+            role: {
+              id: 0,
+              name: 'parent',
+              description: 'parent of the family'
+            }
+          };
+          record.people.push(parent1);
+        }
+        if (parentFirstName2 !== '') {
+          const parent2: Person = {
+            id: 0,
+            firstName: parentFirstName2,
+            lastName: familyName,
+            displayName: (parentFirstName2 + ' ' + familyName).trim(),
+            role: {
+              id: 0,
+              name: 'parent',
+              description: 'parent of the family'
+            }
+          };
+          record.people.push(parent2);
+        }
+        break;
+      case 6://cancen type
+        record.cancerType = value.v;
+        break;
+      case 7://diagnosis date
+        if (noValue) {
+          record.diagnosisDate = null;
+        } else {
+          record.diagnosisDate = new Date(Date.parse(value.w));
+        }
+        break;
+      case 8://length of treatment
+        if (noValue) {
+          record.lengthOfTreatment = null;
+        } else {
+          let scalar = 1;
+          const lengthOfTreatment: string = value.v;
+          if (lengthOfTreatment.includes('month'))
+            scalar = 30;
+          if (lengthOfTreatment.includes('week'))
+            scalar = 7;
+          if (lengthOfTreatment.includes('year'))
+            scalar = 365;
+          const numberInLOT: number = parseInt(lengthOfTreatment.split(' ')[0]);
+          record.lengthOfTreatment = numberInLOT * scalar;
+        }
+        break;
+      case 9://treatment notes
+        if (!record.notes) {
+          record.notes = [];
+        }
+        const treatmentNotes: Note = {
+          id: 0,
+          title: 'Treatment Notes',
+          content: value.v
+        };
+        record.notes.push(treatmentNotes);
+        break;
+      case 10://heaven date
+        record.heavenDate = noValue?null:new Date(Date.parse(value.w));
+        break;
+      case 11://relapse
+        record.relapse = value.v.toLowerCase().trim() === 'y';
+        break;
+      case 12://date of relapse
+        record.dateOfRelapse = noValue?null:new Date(Date.parse(value.w));
+        break;
+      case 13://street address
+        record.streetAddress = value.v;
+        break;
+      case 14://city
+        record.city = value.v;
+        break;
+      case 15://postal code
+        record.postalCode = value.v;
+        break;
+      case 16://phone number
+        record.phoneNumber = parseInt(value.v.replace(/\D/g,''));
+        break;
+      case 17://cell phone number
+        record.cellPhone = parseInt(value.v.replace(/\D/g,''));
+        break;
+      case 18://email
+        record.email = value.v;
+        break;
+      case 19://sibling
+        const siblings: Array<Person> = value.v.split(',').map((sibling: string) => {
+          const siblingString = sibling.trim();
+          const siblingFirstName = siblingString.split(' ')[0];
+          const siblingObj: Person = {
+            id: 0,
+            firstName: siblingFirstName,
+            lastName: record.people[0].lastName,
+            displayName: (siblingFirstName + ' ' + record.people[0].lastName).trim(),
+            role: {
+              id: 0,
+              name: 'sibling',
+              description: 'subling of the family',
+            }
+          };
+          return siblingObj;
+        });
+        if (!record.people)
+          record.people = [];
+        record.people.push(...siblings);
+        if (value.v.includes('age')) {
+          if (!record.notes)
+            record.notes = [];
+          const ageNote: Note = {
+            id: 0,
+            title: 'Sibling info',
+            content: value.v,
+          };
+          record.notes.push(ageNote);
+        }
+        break;
+      case 20://location of visit
+        record.locationOfVisit = value.v;
+        break;
+      case 21://social worker
+        record.socialWorker = value.v;
+        break;
+      case 22://other notes
+        const otherNotes: Note = {
+          id: 0,
+          title: 'Other Notes',
+          content: value.v,
+        };
+        if (!record.notes)
+          record.notes = [];
+        record.notes.push(otherNotes);
+        records.push(record);
+        record = {};
+        record.id = 0;
+        break;
+      default:
+        break;
     }
-    parentObjects.push({
-      first_name: parent,
-      last_name: null,
-      role: "parent",
-      _id: UniqueId()
-    });
-  });
-  return parentObjects;
-}
-
-function parseSibling(value: string) {
-  const [name, age] = value.split("age");
-  //console.log(name);
-  return parseName(name.trim(), "sibling");
-}
-
-export function parseSiblings(name: string) {
-  const siblings = name.split(",");
-  //console.log(siblings);
-  return siblings.map(element => parseSibling(element));
-}
-
-// assumes that the user enters in a number in the first value of the string and a unit of length
-export function parseLengthOfTreatment(stringValue: string) {
-  const number = parseInt(stringValue);
-  if (Number.isInteger(number) && number > 0) {
-    stringValue = stringValue.toLowerCase();
-    if (stringValue.includes("years")) {
-      return number * 365;
-    } else if (stringValue.includes("months")) {
-      return number * 30;
-    } else {
-      return 0;
-    }
+    i++;
   }
-  return 0;
+  return records;
 }
-
-function getRecommendations(header: string) {
-  const relatedWords = header.split(" ");
-  const headerValues = settings.RECORD_TEMPLATE;
-  let recommendations: Array<any> = [];
-  relatedWords.forEach(word => {
-    const re = new RegExp(word, "i");
-    const result = headerValues.filter(value => {
-      return value.display_name.match(re);
-    });
-    recommendations = recommendations.concat(result);
-  });
-
-  return recommendations;
-}
-
-/**
- *
- * @param {string} header
- * @returns {id: string, value(parsed value): string, valid: boolean, recommended: string[]} ParsedHeader
- */
-function parseHeader(header: string) {
-  //set an uniqid so we can find the cells using the old header in case of updating header.
-  //read into the settings column.
-  //if no match, try to break header into
-  //array of words and find the column that
-  //include all the words.toLower().
-  //if still no match,
-  //return the header converted to snake case, then set valid to false
-  //then find the column that include the most of the words,
-  //ranked from most likely to least.
-  const id = UniqueId();
-  const headerValues = settings.RECORD_TEMPLATE;
-  const re = new RegExp(header, "i");
-  const filteredHeaders = headerValues.filter(headerValue => {
-    if (headerValue.display_name === "Birthday" && header === "Birthday") {
-      console.log(headerValue, header);
-    }
-
-    return headerValue.display_name.match(re);
-  });
-  let valid = null;
-  let parsedHeader = null;
-  let recommended = [];
-  // console.log(filteredHeaders);
-  const snakedCaseHeader = changeCase.snakeCase(header);
-  if (filteredHeaders.length === 0) {
-    valid = false;
-    parsedHeader = snakedCaseHeader;
-    recommended = getRecommendations(header);
-  } else {
-    valid = true;
-    parsedHeader = filteredHeaders[0].display_name;
-  }
-
-  // console.log({ id, value: parsedHeader, valid, recommended });
-  return {
-    id,
-    value: parsedHeader,
-    valid,
-    recommended,
-    updatedValue: snakedCaseHeader
-  };
-}
-
-/**
- *
- * @param {string} value
- * @param {ParsedHeader} parsedHeader
- * @returns {value: string, valid: boolean, parser: function}
- */
-function parseCell(value: string, parsedHeader: any) {
-  const valid = value ? true : false;
-
-  return {
-    id: parsedHeader.id,
-    value,
-    valid,
-    parsedHeader,
-    parser: null
-  };
-}
-
-//@return record[]
-/*record: {
-  [header_id]: string,
-  valid: boolean,
-  parsedHeader: ParsedHeader,
-  originalValue: string,
-  parser: function,
-}
-*/
-/**
- *
- * @param {CSV} csv
- * @returns {Records} [...{ id: string, value: string, valid: boolean, parsedHeader: ParsedHeader, originalValue: string, parser: function,}]
- */
-export const parseSheet = (json: any) => {
-  console.log(json);
-  const headers = Object.keys(json[0]);
-  const parsedHeaders = headers.map(header => parseHeader(header));
-  const res: Array<any> = [];
-
-  json.forEach((row: any) => {
-    parsedHeaders.forEach(header => {
-      const cellObj = parseCell(row[header.value], header);
-      const record = {
-        ...cellObj,
-        valid: cellObj.valid && header.valid,
-        originalValue: row[header.value]
-      };
-
-      res.push(record);
-    });
-  });
-  console.log(res);
-  return res;
-};
