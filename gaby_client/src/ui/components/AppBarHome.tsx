@@ -79,7 +79,7 @@ export default function AppBarHome() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+            Record Manager
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
