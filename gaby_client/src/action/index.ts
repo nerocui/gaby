@@ -57,6 +57,10 @@ export function GetRecords() {
 	}
 }
 
+export function SetRecords(records: Array<Record>) {
+	return (dispatch: any) => dispatch(DispatchSetRecords(records));
+};
+
 export function GetRoles() {
 	return (dispatch: any) => {
 		Axios.get(GetRootURL() + '/api/record/getallroles')

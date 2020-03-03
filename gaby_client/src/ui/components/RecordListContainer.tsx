@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import Dropzone from './Dropzone';
 import xlsx, { WorkSheet, WorkBook } from "xlsx";
 import { ParseRaw } from '../../utils/ParserUtil';
+import { SetRecords } from '../../action';
 
-const RecordList = (props: any) => {
+const RecordListContainer = (props: any) => {
 
     const [completed, setCompleted] = useState(false);
 
@@ -20,6 +21,7 @@ const RecordList = (props: any) => {
                 const sheet: WorkSheet = parsedData.Sheets[sheetName];
                 parsedRecords.push(...ParseRaw(sheet, props.roles));
             });
+            props.SetRecords(parsedRecords);
         }
         setCompleted(true);
         // this.props.importRecords(records);
@@ -59,14 +61,6 @@ const RecordList = (props: any) => {
                     </div>
                 )
             })}
-            <div>
-                <Dropzone
-                    wrapperStyle="component--admin__import"
-                    inActiveText="Click or drop file(s) here to import..."
-                    activeText="Drop here to start the import..."
-                    handleChange={handleChange}
-                />
-            </div>
         </div>
     );
 };
@@ -78,4 +72,4 @@ function MapStateToProps(State: State) {
     };
 }
 
-export default connect(MapStateToProps)(RecordList);
+export default connect(MapStateToProps, { SetRecords })(RecordListContainer);

@@ -1,6 +1,6 @@
 import React from 'react';
 import AppBarHome from '../components/AppBarHome';
-import RecordList from '../components/RecordList';
+import RecordListContainer from '../components/RecordListContainer';
 import { GetAllDate } from '../../action';
 import { connect } from 'react-redux';
 
@@ -9,7 +9,7 @@ const HomePage = (props: any) => {
     return (
         <div>
             <AppBarHome />
-            <RecordList />
+            <RecordListContainer />
         </div>
     );
 };
