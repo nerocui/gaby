@@ -13,6 +13,7 @@ export type AuthState = {
 export type RecordState = {
     items: Array<Record>,
     selectedItem: Record | null,
+    roles: Array<Role>,
 };
 
 export type State = {
@@ -37,7 +38,8 @@ export type Person = {
     firstName: string,
     lastName: string,
     displayName: string,
-    role: Role,
+    role: Role | null,
+    roleId: number,
 };
 
 export type Record = {

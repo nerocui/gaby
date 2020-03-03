@@ -98,13 +98,16 @@ namespace Gaby.Migrations
                     b.Property<DateTime>("DateOfApplication")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DateOfRelapse")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfVisit")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DiagnosisTime")
+                    b.Property<DateTime>("DiagnosisDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")

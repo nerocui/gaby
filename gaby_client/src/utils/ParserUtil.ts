@@ -1,7 +1,17 @@
 import { Person, Role, Record, Note } from "../models/index.js";
 import { WorkSheet } from "xlsx";
+import { getRoles } from "@testing-library/react";
 
-export const ParseRaw = (sheet: WorkSheet): Array<Record> => {
+const getRoleId = (roles: Array<Role>, value: string): number => {
+  let roleToReturn = 1;
+  roles.map((role: Role) => {
+    if (role.name.toLowerCase() === value)
+      roleToReturn = role.id;
+  });
+  return roleToReturn;
+}
+
+export const ParseRaw = (sheet: WorkSheet, roles: Array<Role>): Array<Record> => {
   const column = 23;
   let i = 0;
   let records: Array<Record> = [];
@@ -62,11 +72,8 @@ export const ParseRaw = (sheet: WorkSheet): Array<Record> => {
           firstName,
           lastName,
           displayName,
-          role: {
-            id: 0,
-            name: 'child',
-            description: 'child of the file'
-          }
+          role: null,
+          roleId: getRoleId(roles, 'child'),
         };
         if (!record.people) {
           record.people = [];
@@ -109,11 +116,8 @@ export const ParseRaw = (sheet: WorkSheet): Array<Record> => {
             firstName: parentFirstName1,
             lastName: familyName,
             displayName: (parentFirstName1 + ' ' + familyName).trim(),
-            role: {
-              id: 0,
-              name: 'parent',
-              description: 'parent of the family'
-            }
+            role: null,
+            roleId: getRoleId(roles, 'parent'),
           };
           record.people.push(parent1);
         }
@@ -123,11 +127,8 @@ export const ParseRaw = (sheet: WorkSheet): Array<Record> => {
             firstName: parentFirstName2,
             lastName: familyName,
             displayName: (parentFirstName2 + ' ' + familyName).trim(),
-            role: {
-              id: 0,
-              name: 'parent',
-              description: 'parent of the family'
-            }
+            role: null,
+            roleId: getRoleId(roles, 'parent'),
           };
           record.people.push(parent2);
         }
@@ -205,11 +206,8 @@ export const ParseRaw = (sheet: WorkSheet): Array<Record> => {
             firstName: siblingFirstName,
             lastName: record.people[0].lastName,
             displayName: (siblingFirstName + ' ' + record.people[0].lastName).trim(),
-            role: {
-              id: 0,
-              name: 'sibling',
-              description: 'subling of the family',
-            }
+            role: null,
+            roleId: getRoleId(roles, 'sibling'),
           };
           return siblingObj;
         });

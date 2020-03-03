@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Gaby.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,13 +13,14 @@ namespace Gaby.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FileNumber = table.Column<int>(nullable: false),
+                    FileNumber = table.Column<string>(nullable: true),
                     DateOfApplication = table.Column<DateTime>(nullable: false),
                     DateOfVisit = table.Column<DateTime>(nullable: false),
                     DateHelped = table.Column<DateTime>(nullable: false),
-                    DiagnosisTime = table.Column<DateTime>(nullable: false),
+                    DiagnosisDate = table.Column<DateTime>(nullable: false),
                     DateOfRelapse = table.Column<DateTime>(nullable: false),
                     HeavenDate = table.Column<DateTime>(nullable: false),
+                    DateOfBirth = table.Column<DateTime>(nullable: false),
                     LocationOfVisit = table.Column<string>(nullable: true),
                     SocialWorker = table.Column<string>(nullable: true),
                     LengthOfTreatment = table.Column<int>(nullable: false),

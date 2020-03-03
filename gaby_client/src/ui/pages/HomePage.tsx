@@ -1,8 +1,11 @@
 import React from 'react';
 import AppBarHome from '../components/AppBarHome';
 import RecordList from '../components/RecordList';
+import { GetAllDate } from '../../action';
+import { connect } from 'react-redux';
 
 const HomePage = (props: any) => {
+    props.GetAllDate();
     return (
         <div>
             <AppBarHome />
@@ -11,4 +14,4 @@ const HomePage = (props: any) => {
     );
 };
 
-export default HomePage;
+export default connect(null, { GetAllDate })(HomePage);

@@ -11,14 +11,17 @@ namespace Gaby.Controllers
     public class RecordController : ControllerBase
     {
         private readonly IRecordRepository _repo;
-        public RecordController(IRecordRepository repo)
+        private readonly IRoleRepository _roleRepo;
+        public RecordController(IRecordRepository repo, IRoleRepository roleRepo)
         {
+            _roleRepo = roleRepo;
             _repo = repo;
         }
         [HttpPost("add")]
         public async Task<IActionResult> Add(Record record)
         {
-            if (await _repo.RecordExists(record.FileNumber)) {
+            if (await _repo.RecordExists(record.FileNumber))
+            {
                 return BadRequest("Record already exists.");
             }
             return Ok(await _repo.Add(record));
@@ -37,7 +40,8 @@ namespace Gaby.Controllers
             {
                 var allRecords = await _repo.GetAllRecords();
                 return Ok(allRecords);
-            } else
+            }
+            else
             {
                 return BadRequest("Failed to add records.");
             }
@@ -46,6 +50,11 @@ namespace Gaby.Controllers
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _repo.GetAllRecords());
+        }
+        [HttpGet("getallroles")]
+        public async Task<IActionResult> GetAllRole()
+        {
+            return Ok(await _roleRepo.GetAll());
         }
     }
 }

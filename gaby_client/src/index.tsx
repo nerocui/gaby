@@ -39,8 +39,10 @@ async function GetInitialState(): Promise<State> {
 	};
 	if (loggedIn) {
 		try {
-			const res = await Axios.get(GetRootURL() + '/api/record/getall');
-			State.RecordState.items = res.data;
+			const recordRes = await Axios.get(GetRootURL() + '/api/record/getall');
+			const roleRes = await Axios.get(GetRootURL() + '/api/record/getallroles');
+			State.RecordState.items = recordRes.data;
+			State.RecordState.roles = roleRes.data;
 			State.RecordState.selectedItem = null;
 		} catch (err) {
 			console.log('Failed get all records for initial state', err);

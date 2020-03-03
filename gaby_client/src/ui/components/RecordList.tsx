@@ -8,7 +8,7 @@ import { ParseRaw } from '../../utils/ParserUtil';
 const RecordList = (props: any) => {
 
     const [completed, setCompleted] = useState(false);
-    
+
     const loadData = (e: any) => {
         const rawData = e.target.result;
         const parsedData: WorkBook = xlsx.read(rawData, { type: "binary" });
@@ -18,7 +18,7 @@ const RecordList = (props: any) => {
             // if we have sheets then go through each sheet..
             parsedData.SheetNames.forEach((sheetName: string) => {
                 const sheet: WorkSheet = parsedData.Sheets[sheetName];
-                parsedRecords.push(...ParseRaw(sheet));
+                parsedRecords.push(...ParseRaw(sheet, props.roles));
             });
         }
         setCompleted(true);
@@ -74,6 +74,7 @@ const RecordList = (props: any) => {
 function MapStateToProps(State: State) {
     return {
         items: State.RecordState.items,
+        roles: State.RecordState.roles,
     };
 }
 

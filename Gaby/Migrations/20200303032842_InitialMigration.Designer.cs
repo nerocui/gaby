@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gaby.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200226225233_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200303032842_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,20 +100,23 @@ namespace Gaby.Migrations
                     b.Property<DateTime>("DateOfApplication")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DateOfRelapse")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateOfVisit")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DiagnosisTime")
+                    b.Property<DateTime>("DiagnosisDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FileNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("FileNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("HeavenDate")
                         .HasColumnType("datetime2");
