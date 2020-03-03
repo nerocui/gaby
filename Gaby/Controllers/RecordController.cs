@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gaby.Data;
@@ -29,6 +30,7 @@ namespace Gaby.Controllers
         [HttpPost("addall")]
         public async Task<IActionResult> AddAll(IEnumerable<Record> records)
         {
+            Console.WriteLine("got here");
             foreach (var record in records)
             {
                 if (await _repo.RecordExists(record.FileNumber))

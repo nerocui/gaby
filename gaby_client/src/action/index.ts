@@ -86,6 +86,17 @@ export function GetAllDate() {
 	};
 }
 
+export function PostRecords(records: Array<Record>) {
+	return async (dispatch: any) => {
+		try {
+			const res = await Axios.post(GetRootURL() + '/api/record/addall', records);
+			console.log(res);
+		} catch (err) {
+			console.log('Failed to post records');
+		}
+	};
+}
+
 export function Logout() {
 	return (dispatch: any) => {
 		localStorage.setItem('token', '');

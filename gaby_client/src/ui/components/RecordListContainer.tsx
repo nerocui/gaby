@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import Dropzone from './Dropzone';
 import xlsx, { WorkSheet, WorkBook } from "xlsx";
 import { ParseRaw } from '../../utils/ParserUtil';
-import { SetRecords } from '../../action';
+import { SetRecords, PostRecords } from '../../action';
+import RecordList from './RecordList';
 
 const RecordListContainer = (props: any) => {
 
@@ -22,6 +23,7 @@ const RecordListContainer = (props: any) => {
                 parsedRecords.push(...ParseRaw(sheet, props.roles));
             });
             props.SetRecords(parsedRecords);
+            props.PostRecords(parsedRecords);
         }
         setCompleted(true);
         // this.props.importRecords(records);
@@ -39,9 +41,10 @@ const RecordListContainer = (props: any) => {
             console.log(e);
           }
         });
-      }
-    if (props.items.length === 0) {
-        return (
+    }
+    return (
+        <div>
+            <RecordList />
             <div>
                 <Dropzone
                     wrapperStyle="component--admin__import"
@@ -50,26 +53,14 @@ const RecordListContainer = (props: any) => {
                     handleChange={handleChange}
                 />
             </div>
-        )
-    }
-    return (
-        <div>
-            {props.items.map((item: Record) => {
-                return (
-                    <div key={item.id}>
-                        {item.fileNumber}
-                    </div>
-                )
-            })}
         </div>
     );
 };
 
 function MapStateToProps(State: State) {
     return {
-        items: State.RecordState.items,
         roles: State.RecordState.roles,
     };
 }
 
-export default connect(MapStateToProps, { SetRecords })(RecordListContainer);
+export default connect(MapStateToProps, { SetRecords, PostRecords })(RecordListContainer);

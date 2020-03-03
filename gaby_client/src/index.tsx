@@ -13,6 +13,16 @@ import JwtDecode from 'jwt-decode';
 import { initialRecordState } from './reducer/RecordReducer';
 import Axios from 'axios';
 import { GetRootURL } from './utils/DomainService';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import { PersistGate } from 'redux-persist/integration/react';
+
+const persistConfig = {
+	key: 'root',
+	storage,
+};
+  
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise, ReduxThunk)(createStore);
 
@@ -51,10 +61,12 @@ async function GetInitialState(): Promise<State> {
 	return State;
 }
 
-function RenderApp(store: any) {
+function RenderApp(store: any, persistor: any) {
 	ReactDOM.render(
 		<Provider store={store}>
-            <App />
+			<PersistGate loading={null} persistor={persistor}>
+				<App />
+			</PersistGate>
 		</Provider>,
 		document.getElementById('root')
 	);
@@ -62,11 +74,12 @@ function RenderApp(store: any) {
 
 async function StartUp() {
 	const initialState: State = await GetInitialState();
-	const store = createStoreWithMiddleware(
-		rootReducer,
+	const store: any = createStoreWithMiddleware(
+		persistedReducer,
 		initialState,
 	);
-	RenderApp(store);
+	let persistor = persistStore(store);
+	RenderApp(store, persistor);
 }
 
 StartUp();
