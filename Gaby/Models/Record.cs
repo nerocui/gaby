@@ -10,13 +10,13 @@ namespace Gaby.Models
     {
         public int Id { get; set; }
         public string FileNumber { get; set; }
-        public DateTime DateOfApplication { get; set; }
-        public DateTime DateOfVisit { get; set; }
-        public DateTime DateHelped { get; set; }
-        public DateTime DiagnosisDate { get; set; }
-        public DateTime DateOfRelapse { get; set; }
-        public DateTime HeavenDate { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfApplication { get; set; }
+        public DateTime? DateOfVisit { get; set; }
+        public DateTime? DateHelped { get; set; }
+        public DateTime? DiagnosisDate { get; set; }
+        public DateTime? DateOfRelapse { get; set; }
+        public DateTime? HeavenDate { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string LocationOfVisit { get; set; }
         public string SocialWorker { get; set; }
         public int LengthOfTreatment { get; set; }
@@ -24,8 +24,8 @@ namespace Gaby.Models
         public string StreetAddress { get; set; }
         public string City { get; set; }
         public string PostalCode { get; set; }
-        public int PhoneNumber { get; set; }
-        public int CellPhone { get; set; }
+        public string PhoneNumber { get; set; }
+        public string CellPhone { get; set; }
         public string Email { get; set; }
         public string CancerType { get; set; }
         public Collection<Note> Notes { get; set; }

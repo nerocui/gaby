@@ -189,10 +189,10 @@ export const ParseRaw = (sheet: WorkSheet, roles: Array<Role>): Array<Record> =>
         record.postalCode = value.v;
         break;
       case 16://phone number
-        record.phoneNumber = parseInt(value.v.replace(/\D/g,''));
+        record.phoneNumber = value.v.replace(/\D/g,'');
         break;
       case 17://cell phone number
-        record.cellPhone = parseInt(value.v.replace(/\D/g,''));
+        record.cellPhone = value.v.replace(/\D/g,'');
         break;
       case 18://email
         record.email = value.v;

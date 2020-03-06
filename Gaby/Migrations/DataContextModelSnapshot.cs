@@ -83,8 +83,8 @@ namespace Gaby.Migrations
                     b.Property<string>("CancerType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CellPhone")
-                        .HasColumnType("int");
+                    b.Property<string>("CellPhone")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ChildId")
                         .HasColumnType("int");
@@ -92,22 +92,22 @@ namespace Gaby.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateHelped")
+                    b.Property<DateTime?>("DateHelped")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfApplication")
+                    b.Property<DateTime?>("DateOfApplication")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfRelapse")
+                    b.Property<DateTime?>("DateOfRelapse")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfVisit")
+                    b.Property<DateTime?>("DateOfVisit")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DiagnosisDate")
+                    b.Property<DateTime?>("DiagnosisDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -116,7 +116,7 @@ namespace Gaby.Migrations
                     b.Property<string>("FileNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("HeavenDate")
+                    b.Property<DateTime?>("HeavenDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("LengthOfTreatment")
@@ -125,8 +125,8 @@ namespace Gaby.Migrations
                     b.Property<string>("LocationOfVisit")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
                         .HasColumnType("nvarchar(max)");
