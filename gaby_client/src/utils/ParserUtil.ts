@@ -1,6 +1,5 @@
 import { Person, Role, Record, Note } from "../models/index.js";
 import { WorkSheet } from "xlsx";
-import { getRoles } from "@testing-library/react";
 
 const getRoleId = (roles: Array<Role>, value: string): number => {
   let roleToReturn = 1;
