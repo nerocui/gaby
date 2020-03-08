@@ -41,7 +41,7 @@ const RecordListContainer = (props: any) => {
             console.log(e);
           }
         });
-    }
+    };
     return (
         <div>
             <RecordList />

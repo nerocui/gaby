@@ -1,15 +1,17 @@
 import React from 'react';
 import AppBarHome from '../components/AppBarHome';
-import RecordListContainer from '../components/RecordListContainer';
+import RecordList from '../components/RecordList';
 import { GetAllDate } from '../../action';
 import { connect } from 'react-redux';
+import useStyle from '../../style/PageStyle';
 
 const HomePage = (props: any) => {
     props.GetAllDate();
+    const classes = useStyle();
     return (
-        <div>
+        <div className={classes.root}>
             <AppBarHome />
-            <RecordListContainer />
+            <RecordList />
         </div>
     );
 };
