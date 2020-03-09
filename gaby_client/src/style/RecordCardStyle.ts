@@ -21,6 +21,11 @@ export const useStyles = makeStyles((theme: Theme) =>
 		justifyContent: 'space-between',
 		alignItems: 'flex-end'
 	},
+	centerFlexContainer: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 	emptyContainer: {
 		height: '20rem',
 		width: '100%',
@@ -30,6 +35,9 @@ export const useStyles = makeStyles((theme: Theme) =>
 	},
 	click: {
 		cursor: 'pointer',
+	},
+	smallIcon: {
+		minWidth: '2rem !important',
 	}
   }),
 );

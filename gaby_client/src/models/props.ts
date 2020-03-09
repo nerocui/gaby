@@ -30,3 +30,9 @@ export type AddressProps = {
     postalCode: string,
     isHover: boolean,
 };
+
+export type ContactInfoProps = {
+    email: string,
+    cellPhone: string,
+    phoneNumber: string,
+}

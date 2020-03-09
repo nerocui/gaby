@@ -10,6 +10,15 @@ import { Person, Role } from '../../models';
 import { RecordItemProps } from '../../models/props';
 import useHover from '@react-hook/hover'
 import Address from './record/Address';
+import ContactInfo from './record/ContactInfo';
+import PlaceIcon from '@material-ui/icons/Place';
+import LocalHospitalIcon from '@material-ui/icons/LocalHospitalOutlined';
+import ViewListIcon from '@material-ui/icons/ViewList';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const RecordItem = (props: RecordItemProps) => {
     const classes = useStyles();
@@ -36,7 +45,7 @@ const RecordItem = (props: RecordItemProps) => {
                             onClick={() => props.history('/detail')}
                             className={classes.gapHorizontal}
                             >
-                            <h3 className={classes.click}>{child && child.displayName}</h3>
+                            <h2 className={classes.click}>{child && child.displayName}</h2>
                         </Link>
                         <p>{props.item.fileNumber}</p>
                     </Box>
@@ -48,8 +57,30 @@ const RecordItem = (props: RecordItemProps) => {
                     isHover={isHovering}
                 />
             </Box>
-            <Box>
-                <p>{props.item.cancerType}</p>
+            <Box className={classes.flexContainer}>
+                <Box>
+                    <Box className={classes.centerFlexContainer}>
+                        <LocalHospitalIcon />
+                        <p>{props.item.cancerType}</p>
+                    </Box>
+                </Box>
+               
+                <Box>
+                    <Box className={classes.centerFlexContainer}>
+                        <PlaceIcon />
+                        <h4>{props.item.locationOfVisit}</h4>
+                    </Box>
+                </Box>
+            </Box>
+            <Box className={classes.flexContainer}>
+                <Box>
+                    {'Helped by: ' + props.item.socialWorker}
+                </Box>
+                <ContactInfo
+                    email={props.item.email}
+                    cellPhone={props.item.cellPhone}
+                    phoneNumber={props.item.phoneNumber}
+                />
             </Box>
             <Box className={classes.gap}></Box>
             <Box className={classes.flexContainer}>
@@ -77,9 +108,30 @@ const RecordItem = (props: RecordItemProps) => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon className={classes.smallIcon}>
+                            <ViewListIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="View Detail"/>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon className={classes.smallIcon}>
+                            <CheckBoxIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Select"/>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon className={classes.smallIcon}>
+                            <NoteAddIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Add Note"/>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon className={classes.smallIcon}>
+                            <DeleteIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary="Delete"/>
+                    </MenuItem>
                 </Menu>
             </Box>
         </Paper>
