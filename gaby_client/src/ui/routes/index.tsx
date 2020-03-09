@@ -4,7 +4,7 @@ import PublicRoute from './PublicRoute';
 import LoginPage from '../pages/LoginPage';
 import PrivateRoute from './PrivateRoute';
 import HomePage from '../pages/HomePage';
-
+import ImportPage from '../pages/ImportPage';
 
 
 const routes = (props: any) => {
@@ -14,6 +14,7 @@ const routes = (props: any) => {
                 <Switch>
                     <PublicRoute path='/' exact component={LoginPage} />
                     <PrivateRoute path='/home' exact component={HomePage} />
+                    <PrivateRoute path='/import' exact component={ImportPage} />
                 </Switch>
             </div>
 		</Router>

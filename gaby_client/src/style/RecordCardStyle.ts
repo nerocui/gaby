@@ -8,6 +8,7 @@ export const useStyles = makeStyles((theme: Theme) =>
 	recordContainer: {
 		marginBottom: theme.spacing(1),
 		padding: theme.spacing(1),
+		boxSizing: 'border-box',
 	},
 	gap: {
 		marginBottom: theme.spacing(1),
@@ -19,16 +20,16 @@ export const useStyles = makeStyles((theme: Theme) =>
 		display: 'flex',
 		justifyContent: 'space-between',
 		alignItems: 'flex-end'
+	},
+	emptyContainer: {
+		height: '20rem',
+		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	click: {
+		cursor: 'pointer',
 	}
   }),
 );
-
-export const useMaterialStyles = makeStyles({
-	root: {
-		marginBottom: '1rem'
-	},
-	buttonIcon: {
-		height: '100%',
-		width: '100%',
-	}
-});
