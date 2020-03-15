@@ -42,7 +42,7 @@ const RecordItem = (props: RecordItemProps) => {
                 <Box>
                     <Box className={classes.flexContainer}>
                         <Link
-                            onClick={() => props.history('/detail')}
+                            onClick={() => props.history.push(`/details/${props.item.id}`)}
                             className={classes.gapHorizontal}
                             >
                             <h2 className={classes.click}>{child && child.displayName}</h2>

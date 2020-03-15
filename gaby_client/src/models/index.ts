@@ -13,6 +13,7 @@ export type AuthState = {
 export type RecordState = {
     items: Array<Record>,
     selectedItem: Record | null,
+    selectedItemLoading: boolean,
     roles: Array<Role>,
 };
 

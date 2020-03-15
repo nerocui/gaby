@@ -24,6 +24,20 @@ function DispatchSetRecords(records: Array<Record>) {
 	};
 }
 
+function DispatchSelectedRecordLoading(loading: boolean) {
+	return {
+		type: TYPE.SET_SELECTED_RECORD_LOADING,
+		payload: loading,
+	};
+}
+
+function DispatchSetSelectedRecord(record: Record) {
+	return {
+		type: TYPE.SET_SELECTED_RECORD,
+		payload: record,
+	};
+}
+
 function DispatchSetRoles(roles: Array<Role>) {
 	return {
 		type: TYPE.SET_ROLES,
@@ -95,6 +109,19 @@ export function PostRecords(records: Array<Record>) {
 			console.log('Failed to post records');
 		}
 	};
+}
+
+export function GetRecord(id: number) {
+	return async (dispatch: any) => {
+		try {
+			dispatch(DispatchSelectedRecordLoading(true));
+			const res = await Axios.get(GetRootURL() + `/api/Record?id=${id}`);
+			dispatch(DispatchSetSelectedRecord(res.data));
+			dispatch(DispatchSelectedRecordLoading(false));
+		} catch (err) {
+			console.log('Failed to get record', err);
+		}
+	}
 }
 
 export function Logout() {

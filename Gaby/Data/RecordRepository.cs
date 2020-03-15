@@ -86,9 +86,12 @@ namespace Gaby.Data
                 .ToListAsync();
         }
 
-        public Task<Record> GetRecordById(int recordId)
+        public async Task<Record> GetRecordById(int recordId)
         {
-            throw new System.NotImplementedException();
+            return await _context.Records
+                .Include(r => r.Notes)
+                .Include(r => r.People)
+                .FirstOrDefaultAsync(x => x.Id == recordId);
         }
 
         public Task<Record> Modify(Record record)

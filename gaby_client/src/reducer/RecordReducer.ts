@@ -4,6 +4,7 @@ import TYPE from '../action/type';
 export const initialRecordState: RecordState = {
     items: [],
     selectedItem: null,
+    selectedItemLoading: true,
     roles: [],
 };
 
@@ -15,6 +16,8 @@ export default (state = initialRecordState, action: Action) => {
             return Object.assign({}, state, { selectedItem: action.payload });
         case TYPE.SET_ROLES:
             return Object.assign({}, state, { roles: action.payload });
+        case TYPE.SET_SELECTED_RECORD_LOADING:
+            return Object.assign({}, state, { selectedItemLoading: action.payload });
         default:
 			return state;
 	}

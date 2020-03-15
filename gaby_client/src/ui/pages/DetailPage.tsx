@@ -1,19 +1,20 @@
 import React from 'react';
 import SecondaryAppBar from '../components/SecondaryAppBar';
-import { DetailPageProps } from '../../models/props';
-import { Box } from '@material-ui/core';
+import { State } from '../../models';
+import { connect } from 'react-redux';
+import { GetRecord } from '../../action';
+import RecordDetail from '../components/record/RecordDetail';
+import { useParams } from 'react-router-dom';
 
-const DetailPage = (props: DetailPageProps) => {
+const DetailPage = (props: any) => {
+    let { id } = useParams();
+    props.GetRecord(id);
     return (
         <div>
             <SecondaryAppBar />
-            <Box>
-                <h2>
-                    {props.item.childId}
-                </h2>
-            </Box>
+            <RecordDetail />
         </div>
     );
 };
 
-export default DetailPage;
+export default connect(null, { GetRecord })(DetailPage);

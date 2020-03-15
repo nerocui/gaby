@@ -53,6 +53,11 @@ namespace Gaby.Controllers
         {
             return Ok(await _repo.GetAllRecords());
         }
+        [HttpGet]
+        public async Task<IActionResult> Get(int id)
+        {
+            return Ok(await _repo.GetRecordById(id));
+        }
         [HttpGet("getallroles")]
         public async Task<IActionResult> GetAllRole()
         {

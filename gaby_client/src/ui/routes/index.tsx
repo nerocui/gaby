@@ -5,6 +5,7 @@ import LoginPage from '../pages/LoginPage';
 import PrivateRoute from './PrivateRoute';
 import HomePage from '../pages/HomePage';
 import ImportPage from '../pages/ImportPage';
+import DetailPage from '../pages/DetailPage';
 
 
 const routes = (props: any) => {
@@ -15,6 +16,7 @@ const routes = (props: any) => {
                     <PublicRoute path='/' exact component={LoginPage} />
                     <PrivateRoute path='/home' exact component={HomePage} />
                     <PrivateRoute path='/import' exact component={ImportPage} />
+                    <PrivateRoute path='/details/:id' exact component={DetailPage} />
                 </Switch>
             </div>
 		</Router>
