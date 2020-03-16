@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gaby", "Gaby\Gaby.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gaby.UWP", "Gaby.UWP\Gaby.UWP.csproj", "{D07377B5-5058-42CD-B7D5-292D068FF403}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gaby.Core", "Gaby.UWP.Core\Gaby.Core.csproj", "{C8FC7B58-BECB-4500-A2C6-18D69048B5D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gaby.Core", "Gaby.Core\Gaby.Core.csproj", "{C8FC7B58-BECB-4500-A2C6-18D69048B5D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
