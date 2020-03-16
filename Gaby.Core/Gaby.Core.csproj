@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Gaby.UWP.Core</RootNamespace>
+    <RootNamespace>Gaby.Core</RootNamespace>
   </PropertyGroup>
 
    <ItemGroup>
