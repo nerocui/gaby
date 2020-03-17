@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Record, State } from '../../models';
-import { useStyles } from '../../style/RecordCardStyle';
+import { useStyles } from '../../style/record/RecordCardStyle';
 import { RecordListProps } from '../../models/props';
 import { Button } from '@material-ui/core';
 import Box from '@material-ui/core/Box';

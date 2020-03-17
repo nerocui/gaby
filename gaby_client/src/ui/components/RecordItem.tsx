@@ -5,7 +5,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { Chip, IconButton, Link } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import { useStyles } from '../../style/RecordCardStyle';
+import { useStyles } from '../../style/record/RecordCardStyle';
 import { Person, Role } from '../../models';
 import { RecordItemProps } from '../../models/props';
 import useHover from '@react-hook/hover'
@@ -64,7 +64,7 @@ const RecordItem = (props: RecordItemProps) => {
                         <p>{props.item.cancerType}</p>
                     </Box>
                 </Box>
-               
+
                 <Box>
                     <Box className={classes.centerFlexContainer}>
                         <PlaceIcon />
